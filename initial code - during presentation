@@ -1,0 +1,104 @@
+from machine import Pin, PWM
+import time
+import random
+import neopixel
+
+myled_1 = Pin(23, Pin.OUT)
+myled_2 = Pin(18, Pin.OUT)
+myled_3 = Pin(4, Pin.OUT)
+myled_4 = Pin(15, Pin.OUT)
+servomotor= PWM(Pin(26))
+servomotor.freq(50)
+buzz = Pin(33, Pin.OUT) 
+leftvals= [43, 77, 26]
+rightvals= [128, 102, 77]
+startbutton=Pin(35, Pin.IN, Pin.PULL_UP)
+
+rightbutton=Pin(32, Pin.IN,)
+leftbutton=Pin(5, Pin.IN, Pin.PULL_UP)
+
+
+myneo = neopixel.NeoPixel(Pin(14), 16)
+
+for iteration in range(0, 4):
+    myneo[iteration] = (255, 0, 0)
+    myneo.write()
+    
+buzz.on(); time.sleep(0.8); buzz.off()
+time.sleep(0.5)
+
+for iteration in range(4, 8):
+    myneo[iteration] = (255, 0, 0)
+    myneo.write()
+
+buzz.on(); time.sleep(0.8); buzz.off()
+time.sleep(0.5)
+
+for iteration in range(8, 12):
+    myneo[iteration] = (255, 0, 0)
+    myneo.write()
+    
+buzz.on(); time.sleep(0.8); buzz.off()
+time.sleep(0.5)
+
+for iteration in range(0, 16):
+    myneo[iteration] = (0,255,0)
+    myneo.write()
+    
+buzz.on(); time.sleep(1.2); buzz.off()
+time.sleep(0)
+
+for iteration in range(0, 16):
+    myneo[iteration] = (0, 0, 0)
+myneo.write()
+
+for y in range(5):
+    x=random.randint(1,5)
+    if x==1:
+        myled_1.on()
+    elif x==2:
+        myled_2.on()
+    elif x==3:
+        myled_3.on()
+    elif x==4:
+        myled_4.on()
+    else:
+        myled_1.on()
+        myled_2.on()
+        myled_3.on()
+        myled_4.on()
+    time.sleep(0.4)
+    myled_1.off()
+    myled_2.off()
+    myled_3.off()
+    myled_4.off()
+    time.sleep(0.3)
+    if y==4:
+        break
+
+i=0
+n=0
+servomotor.duty(26)
+
+while True:
+    leftbuttonval= leftbutton.value()
+    rightbuttonval= rightbutton.value()
+    
+    if leftbuttonval == 0:
+        time.sleep(0.05)
+        for i in leftvals[i]:
+            if i>=3:
+                i=0
+
+            while leftbutton.value()==0:
+                time.sleep(0.01)
+    if rightbuttonval==0:
+        time.sleep(0.05)
+        for i in rightvals[n]:
+            if n>=3:
+                n=0
+
+            while rightbutton.value()==0:
+                time.sleep(0.03)
+
+    time.sleep(0.01)
