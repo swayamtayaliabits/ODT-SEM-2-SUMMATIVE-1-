@@ -1,0 +1,86 @@
+DOCUMENTATION: 
+
+IDEATION STAGES:
+We were inspired by a gun and first person shooters, specifically aim trainer games like aim-labs.We wanted to use it to see if we could either have a memory 
+aiming game or a game that keeps a score of the amounts of lights hit by the gun 
+THE INITIAL IDEA
+We initially decided that we would have a stepper motor smoothly move the gun along it's 4 electromagnetised coils at spacings of 30 degrees , with the left side being controlled by a push button and the right side also being controlled by a push button. this motor would have a gun as well as an ultrasound sensor attached to it which would detect objects i.e. an LED if it was blinking set at different distances around it.and the neopixel would light up when the game had to start. 
+LOGIC FLOW (INITIAL IDEA)
+F5 to run code 
+neopixel starts turning red 4 at a time with time delay and buzzer sound and then when the game starts all 16 turn green
+after that the 5 LEDs blink randomly and the goal is try to aim and shoot as many of the blinking leds as possible using the left and right movements of the push button 
+to move the motor.
+
+BEING OVERAMBITIOUS and pitfalls:
+Our first mistake was trying to make it work with a stepper motor instead of a servo motor, as controlled angle movement could only be achieved by that and we 
+did not want smooth movement 
+as it had to be controlled by the Left and Right push buttons. 
+even while trying to calibrate the servo motor, the first mistake we made was putting it into an outer while true loop , which was changed to a single while loop. 
+we also tried to do some rough estimates for the ultrasound sensor which would move with the motor.
+after that we troubleshooted the code more.I realised another issue, initialising the counter was a mistake we made. Not knowing how to properly define functions with arguments hindered a lot of scope for fixing and 
+experimenting.
+
+POST RESEARCH INSIGHTS:
+Learning to define functions with proper arguments helped a lot. Using the modulo operator also was useful in the code, solved issues we were unable to debug otherwise
+such as the constant rotation over the same angle unless the button was pressed twice.DESPITE this we still couldnt get both right and left to work , only right worked. 
+
+ESTIMATED CALCULATIONS HAD WE FIGURED OUT HOW TO MAKE THE HC-SR04
+We ideated the following calculations (hypothetical to see if the ultrasound sensor could work) we used the formula where speed of sound is taken in cm/s where it is (d*0.034)
+i used the sample code from your repo
+pythondistance = duration / 58
+
+if 8 < distance < 12:      # ~10cm threshold
+    my_neo[0] = (0, 255, 0)
+    my_neo.write()
+    time.sleep(0.2)
+    my_neo[0] = (0, 0, 0)
+    my_neo.write()
+The problem was syncing it with the servo. The sensor would need to only read after the servo finished moving, otherwise it's not reading properly:
+duration = time_pulse_us(echo, 1, 30000)
+if duration > 0:
+    distance = duration / 58
+    if 8 < distance < 12:
+        # confirmed hit
+But time_pulse_us blocks everything ,again faced same issue with 
+led blinkers nothing else runs it would take too long so i didnt use this sensor
+
+
+PIVOTING:
+
+FINAL PROJECT AIM:
+MAKE A MEMORY GAME AND AN AIM TRAINER IN A COMBINATION
+TO INCREASE VISUAL INTEREST AND CREATE SOMETHING
+HUMOROUS YET USEFUL IN BUILDING REAL SKILLS
+OBJECTIVE
+TOY TO HELP CHILDREN TO PRACTICE HAND-EYE COORDINATION
+AND FINE-MOTOR SKILLS. AIM TOWARDS THE BLINKING LEDS
+
+FINAL FLOW:
+START BUTTON
+NEOPIXEL+BUZZER sound+ light effect
+LEDS BLINKING
+SERVO-MOTOR turning mechanism works jankily on right push button , very unstable with left push button. 
+
+COULDN'T GET ULTRASOUND SENSOR TO ACCURATELY MAP WHICH
+LEDS WERE TURNING ON
+COULDN'T GET ANGLES CORRECTLY TO ASSIGN LEDS TO HOW
+MUCH THE SERVO MOTOR HAD BEEN TURNED
+VERY HARD TO GET LEDS TO BLINK ALONG WITH BEING
+ABLE TO CONTROL THE SERVO MOTOR
+
+CONTRIBUTIONS:
+DOCUMENTATION GITHUB - SWAYAM 
+PRESENTATION , VIDEO, AESTHETICS, DESIGN , DOCUMENTATION IN PRESENTATION - ARNAV VERMA 
+ULTRASOUND AND SERVO MOTOR CODE - SWAYAM 
+ATTACHING ENCLOSURE, DESIGN ELEMENTS ASSEMBLY - ARNAV VERMA
+ATTACHING HARDWARE - SWAYAM 
+NEOPIXEL,BLINKING LEDS CODE - ARNAV VERMA 
+CIRCUIT DIAGRAM + POST RESEARCH - SWAYAM 
+
+
+
+PAIN POINTS - HARDWARE 
+we had to make the wires which connected the LEDS much longer and away from the breadboard which was tedious as using wires was much more time consuming and delicate , in terms of other difficulties , we had to re solder the neopixel , apart from that and the cable management issues , we didnt face any particular hardware difficulties 
+
+
+
